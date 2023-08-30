@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 Database? _database;
+List WholeDataList = [];
 
 class LocalDatabase {
   Future get database async {
@@ -33,6 +34,14 @@ Name TEXT NOT NULL
     await db.insert('Localdata', {'Name': Name});
     print('${Name} Added to database successfally');
     return 'added';
+  }
+
+  Future readAllData() async {
+    final db = await database;
+    final allData = await db!.query('Localdata');
+    WholeDataList = allData;
+    print(WholeDataList);
+    return 'successfully read';
   }
 
 }

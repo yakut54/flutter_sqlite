@@ -50,11 +50,10 @@ class _MyHomePageState extends State<MyHomePage> {
                     filled: true,
                     contentPadding: EdgeInsets.symmetric(horizontal: 10.0),
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                      borderSide: const BorderSide(
-                        color: Color(0xffe4e4e4),
-                      )
-                    ),
+                        borderRadius: BorderRadius.circular(16.0),
+                        borderSide: const BorderSide(
+                          color: Color(0xffe4e4e4),
+                        )),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(16.0),
                       borderSide: const BorderSide(
@@ -62,13 +61,12 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                     enabledBorder: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(16.0),
-                      borderSide: const BorderSide(
-                        color: Color(0xffe4e4e4),
-                      )
-                    ),
+                        borderRadius: BorderRadius.circular(16.0),
+                        borderSide: const BorderSide(
+                          color: Color(0xffe4e4e4),
+                        )),
                     hintText: 'Enter Full Name',
-                    hintStyle: TextStyle(
+                    hintStyle: const TextStyle(
                       color: Colors.black26,
                       fontWeight: FontWeight.w500,
                       fontSize: 14,
@@ -79,8 +77,9 @@ class _MyHomePageState extends State<MyHomePage> {
                 Align(
                   alignment: Alignment.center,
                   child: GestureDetector(
-                    onTap: () async{
+                    onTap: () async {
                       await LocalDatabase().addDataLocally(Name: fullname.text);
+                      await LocalDatabase().readAllData();
                     },
                     child: Container(
                       margin: EdgeInsets.only(bottom: 12, top: 12),
@@ -107,7 +106,26 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   ),
-                )
+                ),
+                ListView.builder(
+                  shrinkWrap: true,
+                  controller: ScrollController(),
+                  itemCount: WholeDataList.length,
+                  itemBuilder: (context, idx) {
+                    return Container(
+                      color: Colors.teal,
+                      margin: const EdgeInsets.symmetric(horizontal: 20),
+                      height: 60,
+                      width: double.infinity,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(WholeDataList[idx]['Name'], style: TextStyle(fontSize: 30),)
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ],
             ),
           ),

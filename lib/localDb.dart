@@ -2,6 +2,7 @@ import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
 Database? _database;
+List WholeDataList = [];
 
 class LocalDatabase {
   Future get database async {
@@ -33,6 +34,36 @@ Name TEXT NOT NULL
     await db.insert('Localdata', {'Name': Name});
     print('${Name} Added to database successfally');
     return 'added';
+  }
+
+  Future readAllData() async {
+    final db = await database;
+    final allData = await db!.query('Localdata');
+    WholeDataList = allData;
+    return WholeDataList;
+  }
+
+  Future updateData({Name, id}) async{
+    final db = await database;
+    int dbUpdateId = await db.rawUpdate(
+      'UPDATE Localdata SET Name=? WHERE id=?', [Name, id]
+    );
+    print('UPDATE Localdata SET Name=? WHERE id=${id}');
+    return dbUpdateId;
+  }
+
+  Future deleteId({id}) async {
+    final db = await database;
+    await db!.delete('Localdata', where: 'id=?', whereArgs: [id]);
+    print('deleted successfully id=${id}');
+    return 'deleted successfully';
+  }
+
+  Future deleteAll() async {
+    final db = await database;
+    await db.delete('Localdata');
+    print('deleted successfully');
+    return 'deleted successfully';
   }
 
 }
